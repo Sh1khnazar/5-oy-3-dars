@@ -1,14 +1,17 @@
 module.exports = class CustomErrorHandler extends Error {
-	constructor(status, message, errors = []) {
+	constructor(statusCode, message, errors = []) {
 		super(message)
-		this.status = status
+		this.statusCode = statusCode
 		this.errors = errors
+
+		Error.captureStackTrace(this, this.constructor)
 	}
-	static UnAuthorized(message = 'Avtorizatsiyadan oʻtilmagan', errors = []) {
+
+	static Unauthorized(message = 'Avtorizatsiyadan o‘tilmagan', errors = []) {
 		return new CustomErrorHandler(401, message, errors)
 	}
 
-	static BadRequest(message, errors = []) {
+	static BadRequest(message = 'Bad request', errors = []) {
 		return new CustomErrorHandler(400, message, errors)
 	}
 
@@ -18,5 +21,9 @@ module.exports = class CustomErrorHandler extends Error {
 
 	static Forbidden(message = 'Sizga ruxsat berilmagan', errors = []) {
 		return new CustomErrorHandler(403, message, errors)
+	}
+
+	static InternalServerError(message = 'Server xatoligi', errors = []) {
+		return new CustomErrorHandler(500, message, errors)
 	}
 }

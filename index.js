@@ -5,6 +5,7 @@ const authorRouter = require('./routes/author.routes')
 const bookRouter = require('./routes/book.routes')
 require('dotenv').config()
 const errorMiddleware = require('./middleware/error.middleware')
+const authRouter = require('./routes/auth.routes')
 
 const app = express()
 
@@ -15,6 +16,8 @@ app.use(cors())
 
 app.use('/api/authors', authorRouter)
 app.use('/api/books', bookRouter)
+app.use('/api/auth', authRouter)
+
 app.use(errorMiddleware)
 
 async function startServer() {
