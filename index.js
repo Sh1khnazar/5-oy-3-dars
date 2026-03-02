@@ -1,11 +1,13 @@
 const express = require('express')
 const cors = require('cors')
+const cookieParser = require('cookie-parser')
 const connectToDB = require('./config/db')
 const authorRouter = require('./routes/author.routes')
 const bookRouter = require('./routes/book.routes')
 require('dotenv').config()
 const errorMiddleware = require('./middleware/error.middleware')
 const authRouter = require('./routes/auth.routes')
+const quoteRouter = require('./routes/quote.routes')
 
 const app = express()
 
@@ -13,10 +15,12 @@ const PORT = process.env.PORT || 3000
 
 app.use(express.json())
 app.use(cors())
+app.use(cookieParser())
 
 app.use('/api/authors', authorRouter)
 app.use('/api/books', bookRouter)
 app.use('/api/auth', authRouter)
+app.use('/api/quotes', quoteRouter)
 
 app.use(errorMiddleware)
 

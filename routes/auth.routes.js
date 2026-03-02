@@ -5,6 +5,7 @@ const {
 	verify,
 	login,
 	refreshToken,
+	logout,
 } = require('../controllers/auth.controller')
 
 const validate = require('../middleware/validate.middleware')
@@ -19,5 +20,6 @@ authRouter.post('/register', validate(registerSchema), register)
 authRouter.post('/verify', validate(verifySchema), verify)
 authRouter.post('/login', validate(loginSchema), login)
 authRouter.post('/refresh', validate(refreshSchema), refreshToken)
+authRouter.post('/logout', logout)
 
 module.exports = authRouter
