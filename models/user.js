@@ -33,6 +33,14 @@ const userSchema = new Schema(
 			code: String,
 			expiresAt: Date,
 		},
+		firstName: {
+			type: String,
+			trim: true,
+			default: '',
+		},
+		lastName: { type: String, trim: true, default: '' },
+		phone: { type: String, trim: true, default: '' },
+		avatar: { type: String, default: 'default-avatar.png' },
 	},
 	{ timestamps: true },
 )

@@ -20,9 +20,26 @@ const refreshSchema = Joi.object({
 	token: Joi.string().required(),
 })
 
+const updateMeSchema = Joi.object({
+	firstName: Joi.string().min(2).max(50).optional(),
+	lastName: Joi.string().min(2).max(50).optional(),
+	phone: Joi.string()
+		.pattern(/^\+998[0-9]{9}$/)
+		.messages({
+			'string.pattern.base': "Telefon raqami noto'g'ri formatda",
+		})
+		.optional(),
+	email: Joi.string().email().optional(),
+	username: Joi.string().min(3).max(30).alphanum().optional(),
+}).min(1)
+
+const getMeSchema = Joi.object({})
+
 module.exports = {
 	registerSchema,
 	loginSchema,
 	verifySchema,
 	refreshSchema,
+	updateMeSchema,
+	getMeSchema,
 }

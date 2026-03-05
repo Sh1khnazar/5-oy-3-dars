@@ -158,10 +158,63 @@ const logout = async (req, res, next) => {
 	}
 }
 
+// 6. Get Current User (Profil ma'lumotlarini yuklash uchun)
+const getMe = async (req, res, next) => {
+	try {
+		// req.user.id auth middleware orqali kelishi kerak
+		const user = await User.findById(req.user.id)
+		if (!user) throw CustomErrorHandler.NotFound('Foydalanuvchi topilmadi')
+
+		res.status(200).json({ success: true, data: user })
+	} catch (error) {
+		next(error)
+	}
+}
+
+// 7. Update Profile (Rasmda ko'rsatilgan maydonlarni yangilash)
+const updateMe = async (req, res, next) => {
+	try {
+		const { firstName, lastName, phone, email, username } = req.body
+
+		// 1. Email yoki Username bandligini tekshirish (agar o'zgartirilgan bo'lsa)
+		if (email || username) {
+			const existing = await User.findOne({
+				$or: [{ email }, { username }],
+				_id: { $ne: req.user.id },
+			})
+			if (existing)
+				throw CustomErrorHandler.BadRequest('Email yoki Username band')
+		}
+
+		// 2. Ma'lumotlarni yangilash
+		const updatedUser = await User.findByIdAndUpdate(
+			req.user.id,
+			{
+				firstName,
+				lastName,
+				phone,
+				email,
+				username,
+			},
+			{ new: true, runValidators: true },
+		)
+
+		res.status(200).json({
+			success: true,
+			message: 'Profil muvaffaqiyatli yangilandi',
+			data: updatedUser,
+		})
+	} catch (error) {
+		next(error)
+	}
+}
+
 module.exports = {
 	register,
 	verify,
 	login,
 	refreshToken: refreshTokenController,
 	logout,
+	getMe,
+	updateMe,
 }

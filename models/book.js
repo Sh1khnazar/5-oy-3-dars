@@ -39,6 +39,10 @@ const bookSchema = new Schema(
 			ref: 'Author',
 			required: [true, 'Muallif ID-si kiritilishi shart'],
 		},
+		audioUrl: {
+			type: String,
+			default: '',
+		},
 	},
 	{
 		timestamps: true,

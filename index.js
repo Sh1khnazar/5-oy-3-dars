@@ -1,6 +1,7 @@
 const express = require('express')
 const cors = require('cors')
 const cookieParser = require('cookie-parser')
+const path = require('path')
 const connectToDB = require('./config/db')
 const authorRouter = require('./routes/author.routes')
 const bookRouter = require('./routes/book.routes')
@@ -16,6 +17,8 @@ const PORT = process.env.PORT || 3000
 app.use(express.json())
 app.use(cors())
 app.use(cookieParser())
+
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')))
 
 app.use('/api/authors', authorRouter)
 app.use('/api/books', bookRouter)
